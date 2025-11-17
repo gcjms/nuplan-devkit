@@ -1,0 +1,11 @@
+experiment_name: nuplan_out_seq_20
+
+# 仿真输出目录：**必须是包含 .nuboard 文件的那个目录**
+simulation_path:
+  - /home/gcjms/nuplan-devkit/nuplan_out_seq_20/nuplan_out_seq_20/summary
+
+# nuPlan 原始日志 .db 所在目录（你的 mini 在 splits/mini 下面）
+db_files:
+  - /mnt/d/nuplan_data/dataset/nuplan-v1.1/splits/mini
+
+db_version: v1.1-mini

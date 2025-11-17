@@ -1,0 +1,44 @@
+# ===== 基础镜像 =====
+FROM ubuntu:20.04
+
+# 避免交互提示
+ENV DEBIAN_FRONTEND=noninteractive
+
+# ===== 系统依赖 =====
+RUN apt-get update && apt-get install -y \
+    curl gnupg2 ca-certificates software-properties-common default-jdk git \
+ && rm -rf /var/lib/apt/lists/*
+
+# ===== 安装 Miniconda =====
+RUN curl -fsSLo /tmp/Miniconda3.sh https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+ && bash /tmp/Miniconda3.sh -b -p /opt/conda \
+ && rm -f /tmp/Miniconda3.sh
+# 先把 conda 放进 PATH，后面步骤才能用到 conda
+ENV PATH="/opt/conda/bin:${PATH}"
+
+# 可选：清理一把 conda 缓存
+RUN /opt/conda/bin/conda clean -a -y || true
+
+# ===== 准备 nuplan 文件 =====
+# 目标目录
+RUN mkdir -p /nuplan_devkit
+# 一次性复制 3 个关键文件（使用 JSON 语法防止粘贴/行尾问题）
+COPY ["environment.yml", "requirements.txt", "requirements_torch.txt", "/nuplan_devkit/"]
+ENV NUPLAN_HOME=/nuplan_devkit
+ENV PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
+ENV PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn
+ENV PIP_DEFAULT_TIMEOUT=600
+# ===== 创建 conda 环境（environment.yml 会引用两个 requirements 文件）=====
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
+ && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r \
+ && PIP_EXISTS_ACTION=w conda env create -f "$NUPLAN_HOME/environment.yml" \
+ && conda clean -a -y
+
+# 让容器默认使用 nuplan 环境里的 Python/Pip
+ENV PATH="/opt/conda/envs/nuplan/bin:/opt/conda/bin:${PATH}"
+
+# 可选：验证一下 python/pip 可用（构建日志里能看到版本）
+RUN python -V && pip -V
+
+WORKDIR /workspace
+CMD ["/bin/bash"]

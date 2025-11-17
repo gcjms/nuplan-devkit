@@ -1,0 +1,53 @@
+# ------------ Python 基本 ------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.cache/
+.ipynb_checkpoints/
+
+# ------------ 测试 / 静态检查缓存 ------------
+.mypy_cache/
+.pytest_cache/
+.tox/
+.coverage
+*.cover
+htmlcov/
+tox/
+
+# ------------ IDE / 编辑器 ------------
+.vscode/
+.idea/
+*.code-workspace
+
+# ------------ 虚拟环境 ------------
+.venv/
+venv/
+env/
+ENV/
+
+# ------------ 本地配置 / 秘钥 ------------
+.env
+*.local
+*.secret
+
+# ------------ nuPlan 本地输出 / 日志 ------------
+nuplan_out/
+nuplan_out_*/
+nuplan_out_gpu/
+nuplan_out_seq/
+nuplan_out_seq_20/
+logs/
+cache/
+artifacts/
+lightning_logs/
+tb_logs/
+wandb/
+
+# ------------ 各种 log ------------
+*.log
+
