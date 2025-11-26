@@ -42,6 +42,8 @@ def run_simulation(cfg: DictConfig, planners: Optional[Union[AbstractPlanner, Li
         Already contains the changes merged from the experiment's config to default config.
     :param planners: Pre-built planner(s) to run in simulation. Can either be a single planner or list of planners.
     """
+    print("worker cfg:", cfg.worker)
+    print("worker target:", cfg.worker._target_)
     # Fix random seed
     pl.seed_everything(cfg.seed, workers=True)
 
@@ -49,7 +51,9 @@ def run_simulation(cfg: DictConfig, planners: Optional[Union[AbstractPlanner, Li
     common_builder = set_up_common_builder(cfg=cfg, profiler_name=profiler_name)
 
     # Build simulation callbacks
+    # 建一个“执行回调的 worker 池”（串行 or Ray 多进程）
     callbacks_worker_pool = build_callbacks_worker(cfg)
+    # 根据 cfg + output_dir 实例化一堆“干实事的回调”（算 metric、写文件、画图、汇总）
     callbacks = build_simulation_callbacks(cfg=cfg, output_dir=common_builder.output_dir, worker=callbacks_worker_pool)
 
     # Remove planner from config to make sure run_simulation does not receive multiple planner specifications.

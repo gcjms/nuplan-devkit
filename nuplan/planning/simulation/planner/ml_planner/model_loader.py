@@ -45,14 +45,11 @@ class ModelLoader:
         self._initialize_model()
         self._initialized = True
 
-    def build_features(self, current_input: PlannerInput, initialization: PlannerInitialization) -> FeaturesType:
-        """
-        Makes a single inference on a Pytorch/Torchscript model.
-        :param current_input: Iteration specific inputs for building the feature.
-        :param initialization: Additional data require for building the feature.
-        :return: dictionary of FeaturesType types.
-        """
-        assert self._initialized, "The model loader has not been initialized!"
+    def build_features(self, current_input, initialization):
+        assert self._initialized
+
+        for builder in self.feature_builders:
+            print("builder:", type(builder).__name__, "unique_name:", builder.get_feature_unique_name())
 
         features = {
             builder.get_feature_unique_name(): builder.get_features_from_simulation(current_input, initialization)
@@ -71,4 +68,5 @@ class ModelLoader:
         :return: dictionary of target types
         """
         assert self._initialized is True, "The model loader has not been initialized!"
+        # 整个simu的核心
         return self._model.forward(features)

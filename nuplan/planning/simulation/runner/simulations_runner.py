@@ -93,6 +93,8 @@ class SimulationRunner(AbstractRunner):
         )
 
         # Execute specific callback
+        # 依次调用MetricCallback.on_simulation_start，TimingCallback.on_simulation_start，SerializationCallback.on_simulation_startxxx
+
         self.simulation.callback.on_simulation_start(self.simulation.setup)
 
         # Initialize all simulations

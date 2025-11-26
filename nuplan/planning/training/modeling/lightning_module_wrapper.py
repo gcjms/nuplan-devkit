@@ -46,7 +46,9 @@ class LightningModuleWrapper(pl.LightningModule):
         :param warm_up_lr_scheduler: config for instantiating warm up lr scheduler. Can be 'None' for older models and when a warm up lr_scheduler is not being used.
         :param objective_aggregate_mode: how should different objectives be combined, can be 'sum', 'mean', and 'max'.
         """
+        # 调父类（pl.LightningModule）的构造函数
         super().__init__()
+        # 自动把 __init__ 里的参数存进 self.hparams
         self.save_hyperparameters(ignore=["model"])
 
         self.model = model

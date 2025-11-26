@@ -19,6 +19,7 @@ def build_observations(observation_cfg: DictConfig, scenario: AbstractScenario) 
     """
     if is_TorchModuleWrapper_config(observation_cfg):
         # Build model and feature builders needed to run an ML model in simulation
+        # 感知的ml模型
         torch_module_wrapper = build_torch_module_wrapper(observation_cfg.model_config)
         model = LightningModuleWrapper.load_from_checkpoint(
             observation_cfg.checkpoint_path, model=torch_module_wrapper

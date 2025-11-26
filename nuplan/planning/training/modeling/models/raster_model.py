@@ -18,7 +18,9 @@ def convert_predictions_to_trajectory(predictions: torch.Tensor) -> torch.Tensor
     :param predictions: tensor from network
     :return: data suitable for Trajectory
     """
+    # 「1 个样本，每个样本用 48 个数，扁平(flat)存着整条未来轨迹」
     num_batches = predictions.shape[0]
+    # 处理为[1, 12, 4] batch × 时间步数 × 每步状态维度  方便后面包装成 Trajectory
     return predictions.view(num_batches, -1, Trajectory.state_size())
 
 

@@ -34,7 +34,7 @@ def build_lightning_datamodule(
     :param worker: Worker to submit tasks which can be executed in parallel.
     :return: Instantiated datamodule object.
     """
-    # Build features and targets
+    # Build features(训练我需要哪些输入特征) and targets(supervision target)
     feature_builders = model.get_list_of_required_feature()
     target_builders = model.get_list_of_computed_target()
 
@@ -49,7 +49,7 @@ def build_lightning_datamodule(
         target_builders=target_builders,
     )
 
-    # Create data augmentation
+    # Create data augmentation 构造数据增强
     augmentors = build_agent_augmentor(cfg.data_augmentation) if 'data_augmentation' in cfg else None
 
     # Build dataset scenarios

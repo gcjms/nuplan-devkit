@@ -7,7 +7,7 @@ from nuplan.planning.training.modeling.objectives.scenario_weight_utils import e
 from nuplan.planning.training.modeling.types import FeaturesType, ScenarioListType, TargetsType
 from nuplan.planning.training.preprocessing.features.trajectory import Trajectory
 
-
+# ImitationObjective继承基类AbstractObjective
 class ImitationObjective(AbstractObjective):
     """
     Objective that drives the model to imitate the signals from expert behaviors/trajectories.

@@ -39,7 +39,8 @@ def build_training_engine(cfg: DictConfig, worker: WorkerPool) -> TrainingEngine
     :return: TrainingEngine
     """
     logger.info('Building training engine...')
-
+    # cfg的信息在training_raster_model.yaml  
+    # cfg.model = raster_model
     # Create model
     torch_module_wrapper = build_torch_module_wrapper(cfg.model)
 

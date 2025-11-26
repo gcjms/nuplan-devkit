@@ -33,12 +33,14 @@ CONFIG_NAME = 'default_training'
 
 
 @hydra.main(config_path=CONFIG_PATH, config_name=CONFIG_NAME)
+# DictConfig入参，返回TrainingEngine
 def main(cfg: DictConfig) -> Optional[TrainingEngine]:
     """
     Main entrypoint for training/validation experiments.
     :param cfg: omegaconf dictionary
     """
     # Fix random seed
+    # 1. 固定随机种子,除了主进程以外，把 DataLoader 的子进程（worker）里也一起设好种子
     pl.seed_everything(cfg.seed, workers=True)
 
     # Configure logger
@@ -54,7 +56,7 @@ def main(cfg: DictConfig) -> Optional[TrainingEngine]:
     worker = build_worker(cfg)
 
     if cfg.py_func == 'train':
-        # Build training engine
+        # Build training engine , ProfilerContextManager性能统计 类似火焰图
         with ProfilerContextManager(cfg.output_dir, cfg.enable_profiling, "build_training_engine"):
             engine = build_training_engine(cfg, worker)
 

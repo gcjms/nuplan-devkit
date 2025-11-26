@@ -53,6 +53,7 @@ def build_simulations(
     logger.info('Extracting scenarios...')
 
     # Only allow simulation with NuPlanScenarioBuilder except when the NUPLAN_SIMULATION_ALLOW_ANY_BUILDER environment variable is set to a non-zero value.
+    # 先确保你用的是 NuPlan 官方的场景构造器（除非显式放开限制）
     if not int(os.environ.get("NUPLAN_SIMULATION_ALLOW_ANY_BUILDER", "0")) and not is_target_type(
         cfg.scenario_builder, NuPlanScenarioBuilder
     ):

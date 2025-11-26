@@ -48,7 +48,9 @@ def validate_planner_setup(setup: SimulationSetup, planner: AbstractPlanner) -> 
     @raise ValueError in case simulation setup and planner are not a valid combination
     """
     # Validate the setup
+    # 1. planner 声明：我期望什么类型的 observation
     type_observation_planner = planner.observation_type()
+     # 2. 仿真环境里实际提供的 observation 类型
     type_observation = setup.observations.observation_type()
 
     if type_observation_planner != type_observation:

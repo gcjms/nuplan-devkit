@@ -23,6 +23,7 @@ def build_objectives(cfg: DictConfig) -> List[AbstractObjective]:
         if ('scenario_type_weights' in cfg and 'scenario_type_loss_weights' in cfg.scenario_type_weights)
         else {}
     )
+    # cfg.objective.items() = imitation_objective
     for objective_name, objective_type in cfg.objective.items():
         new_objective: AbstractObjective = instantiate(
             objective_type, scenario_type_loss_weighting=scenario_type_loss_weighting
